@@ -1,6 +1,6 @@
 {
   "name": "@sarunas/redux-debounce",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Dispatch actions with debounce",
   "keywords": [],
   "main": "build/index.js",
