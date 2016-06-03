@@ -12,7 +12,7 @@ test.beforeEach((t) => {
   }
 })
 
-test('do not throttle action if meta is not present', (t) => { // eslint-disable-line
+test('do not debounce action if meta is not present', (t) => { // eslint-disable-line
   t.context.dispatch({
     type: 'ACTION_TYPE',
     payload: 1
@@ -26,12 +26,12 @@ test('do not throttle action if meta is not present', (t) => { // eslint-disable
   t.true(t.context.next.calledTwice)
 })
 
-test('throttle action if meta is present', (t) => {
+test('debounce action if meta is present', (t) => {
   t.context.dispatch({
     type: 'ACTION_TYPE',
     payload: 1,
     meta: {
-      throttle: true
+      debounce: true
     }
   })
 
@@ -39,28 +39,56 @@ test('throttle action if meta is present', (t) => {
     type: 'ACTION_TYPE',
     payload: 2,
     meta: {
-      throttle: true
-    }
-  })
-
-  t.true(t.context.next.calledOnce)
-
-  t.same(t.context.next.firstCall.args[0], {
-    type: 'ACTION_TYPE',
-    payload: 1,
-    meta: {
-      throttle: true
+      debounce: true
     }
   })
 
   wait().then(() => {
-    t.true(t.context.next.calledtwice)
+    t.true(t.context.next.calledOnce)
 
-    t.same(t.context.next.secondCall.args[0], {
+    t.same(t.context.next.firstCall.args[0], {
       type: 'ACTION_TYPE',
       payload: 2,
       meta: {
-        throttle: true
+        debounce: true
+      }
+    })
+  })
+
+  t.context.dispatch({
+    type: 'ACTION_TYPE',
+    payload: 3,
+    meta: {
+      debounce: true
+    }
+  })
+
+  wait().then(() => {
+    t.context.dispatch({
+      type: 'ACTION_TYPE',
+      payload: 4,
+      meta: {
+        debounce: true
+      }
+    })
+  })
+
+  wait().then(() => {
+    t.true(t.context.next.calledThrice)
+
+    t.same(t.context.next.secondCall.args[0], {
+      type: 'ACTION_TYPE',
+      payload: 3,
+      meta: {
+        debounce: true
+      }
+    })
+
+    t.same(t.context.next.thirdCall.args[0], {
+      type: 'ACTION_TYPE',
+      payload: 4,
+      meta: {
+        debounce: true
       }
     })
   })

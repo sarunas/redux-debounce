@@ -1,59 +1,59 @@
-import throttle from 'lodash.throttle'
+import debounce from 'lodash.debounce'
 
-export const CANCEL = 'redux-throttle/CANCEL'
-export const FLUSH = 'redux-throttle/FLUSH'
+export const CANCEL = 'redux-debounce/CANCEL'
+export const FLUSH = 'redux-debounce/FLUSH'
 
-function map (throttled, action, method) {
+function map (debounced, action, method) {
   if (action.payload && action.payload.type) {
     let types = action.payload.type
     if (!Array.isArray(types)) {
       types = [types]
     }
-    Object.keys(throttled)
+    Object.keys(debounced)
       .filter((t) => types.includes(t))
       .forEach((t) => t[method]())
     return
   }
-  Object.keys(throttled).forEach((t) => t[method]())
+  Object.keys(debounced).forEach((t) => t[method]())
   return
 }
 
 export default function middleware (defaultWait = 300, defaultThrottleOption = {}) {
-  const throttled = {}
+  const debounced = {}
   return (store) => (next) => (action) => {
     if (action.type === CANCEL) {
-      map(throttled, action, 'cancel')
+      map(debounced, action, 'cancel')
       return next(action)
     }
 
     if (action.type === FLUSH) {
-      map(throttled, action, 'flush')
+      map(debounced, action, 'flush')
       return next(action)
     }
 
-    const shouldThrottle = (action.meta || {}).throttle
+    const shouldDebounce = (action.meta || {}).debounce
 
-    // check if we don't need to throttle the action
-    if (!shouldThrottle) {
+    // check if we don't need to debounce the action
+    if (!shouldDebounce) {
       return next(action)
     }
 
-    if (throttled[action.type]) { // if it's a action which was throttled already
-      return throttled[action.type](action)
+    if (debounced[action.type]) { // if it's a action which was throttled already
+      return debounced[action.type](action)
     }
 
     let wait = defaultWait
     let options = defaultThrottleOption
 
-    if (!isNaN(shouldThrottle) && shouldThrottle !== true) {
-      wait = shouldThrottle
-    } else if (typeof shouldThrottle === 'object') {
-      wait = shouldThrottle.wait || defaultWait
-      options = {...defaultThrottleOption, ...shouldThrottle}
+    if (!isNaN(shouldDebounce) && shouldDebounce !== true) {
+      wait = shouldDebounce
+    } else if (typeof shouldDebounce === 'object') {
+      wait = shouldDebounce.wait || defaultWait
+      options = {...defaultThrottleOption, ...shouldDebounce}
     }
 
-    throttled[action.type] = throttle(next, wait, options)
+    debounced[action.type] = debounce(next, wait, options)
 
-    return throttled[action.type](action)
+    return debounced[action.type](action)
   }
 }

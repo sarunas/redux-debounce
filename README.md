@@ -1,56 +1,51 @@
-redux-throttle
+redux-debounce
 =============
 
-[![build status](https://img.shields.io/travis/mathieudutour/redux-throttle/master.svg?style=flat-square)](https://travis-ci.org/mathieudutour/redux-throttle)
-[![npm version](https://img.shields.io/npm/v/redux-throttle.svg?style=flat-square)](https://www.npmjs.com/package/redux-throttle)
-[![Dependency Status](https://david-dm.org/mathieudutour/redux-throttle.svg)](https://david-dm.org/mathieudutour/redux-throttle)
-[![devDependency Status](https://david-dm.org/mathieudutour/redux-throttle/dev-status.svg)](https://david-dm.org/mathieudutour/redux-throttle#info=devDependencies)
-
-Redux middleware to throttle your actions
+Redux middleware to debounce your actions
 
 ```bash
-npm install --save redux-throttle
+npm install --save redux-debounce
 ```
 
 ## Usage
 
 ```js
 import {createStore, applyMiddleware} from "redux";
-import throttle from "redux-throttle";
+import debounceActions from 'redux-debounce';
 import reducers from "./reducers";
 import actionTypes from "./constants/actionTypes";
 
 const defaultWait = 300
-const defaultThrottleOption = { // https://lodash.com/docs#throttle
+const defaultDebounceOption = { // https://lodash.com/docs#debounce
   leading: true,
   trailing: true
 }
 
-const middleware = throttleActions(defaultWait, defaultThrottleOption);
+const middleware = debounceActions(defaultWait, defaultDebounceOption);
 const store = applyMiddleware(middleware)(createStore)(reducers);
 ```
 
-Then you just have to dispatch actions with the meta `throttle`:
+Then you just have to dispatch actions with the meta `debounce`:
 
 ```js
 {
   type: 'ACTION_TYPE',
   meta: {
-    throttle: true
+    debounce: true
   }
 }
 
 {
   type: 'ACTION_TYPE_2',
   meta: {
-    throttle: 300 // wait time
+    debounce: 300 // wait time
   }
 }
 
 {
   type: 'ACTION_TYPE_3',
   meta: {
-    throttle: {
+    debounce: {
       wait: 300,
       leading: false
     }
@@ -62,7 +57,7 @@ Then you just have to dispatch actions with the meta `throttle`:
 There are 2 special actions exported by the library:
 
 ```js
-import {CANCEL, FLUSH} from "redux-throttle";
+import {CANCEL, FLUSH} from debounce;
 
 dispatch({
   type: CANCEL,
@@ -83,7 +78,7 @@ dispatch({ // will flush everything
 })
 ```
 
-Both of them can be used to respectively cancel or flush a throttled action.
+Both of them can be used to respectively cancel or flush a debounced action.
 
 ## License
 
