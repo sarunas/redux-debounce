@@ -11,10 +11,10 @@ function map (debounced, action, method) {
     }
     Object.keys(debounced)
       .filter((t) => types.includes(t))
-      .forEach((t) => t[method]())
+      .forEach((t) => debounced[t][method]())
     return
   }
-  Object.keys(debounced).forEach((t) => t[method]())
+  Object.keys(debounced).forEach((t) => debounced[t][method]())
   return
 }
 
