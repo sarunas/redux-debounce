@@ -1,7 +1,7 @@
 {
-  "name": "redux-throttle",
+  "name": "redux-debounce",
   "version": "0.1.0",
-  "description": "Queue actions when offline and dispatch them when getting back online",
+  "description": "Dispatch actions with debounce",
   "keywords": [],
   "main": "build/index.js",
   "jsnext:main": "src/index.js",
@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mathieudutour/redux-throttle.git"
+    "url": "https://github.com/sarunas/redux-debounce.git"
   },
   "author": "Mathieu Dutour",
   "license": "MIT"
