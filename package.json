@@ -1,5 +1,5 @@
 {
-  "name": "redux-debounce",
+  "name": "@sarunas/redux-debounce",
   "version": "0.1.0",
   "description": "Dispatch actions with debounce",
   "keywords": [],
@@ -23,6 +23,6 @@
     "type": "git",
     "url": "https://github.com/sarunas/redux-debounce.git"
   },
-  "author": "Mathieu Dutour",
+  "author": "Sarunas Dubinskas",
   "license": "MIT"
 }

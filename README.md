@@ -4,14 +4,14 @@ redux-debounce
 Redux middleware to debounce your actions
 
 ```bash
-npm install --save redux-debounce
+npm install --save @sarunas/redux-debounce
 ```
 
 ## Usage
 
 ```js
 import {createStore, applyMiddleware} from "redux";
-import debounceActions from 'redux-debounce';
+import debounceActions from '@sarunas/redux-debounce';
 import reducers from "./reducers";
 import actionTypes from "./constants/actionTypes";
 
